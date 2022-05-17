@@ -1,4 +1,5 @@
 import 'package:bloc_pattern/screens/login_screen.dart';
+import 'package:bloc_pattern/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

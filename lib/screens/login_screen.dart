@@ -1,3 +1,4 @@
+import 'package:bloc_pattern/screens/register_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -9,51 +10,96 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Login", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
-            SizedBox(height: 30,),
-            TextField(
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                hintText: "Enter Mobile No.",
-                labelText: "Username",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-            ),
-            SizedBox(height: 30,),
-            TextField(
-              keyboardType: TextInputType.text,
-              obscureText: true ,
-              decoration: InputDecoration(
-                hintText: "Enter Password",
-                labelText: "Password",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-            ),
-            SizedBox(height: 30,),
-            RichText(text: TextSpan(
+      body: Form(
+        key: _formKey,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          alignment: Alignment.center,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextSpan(text: "Not a Member?", style:  TextStyle(color: Colors.black)),
-                WidgetSpan(child: SizedBox(width: 5,)),
-                TextSpan(text: "Sign Up", style: TextStyle(color: Colors.black),recognizer: TapGestureRecognizer() ..onTap = () {
-                    //TODO: Navigate to register screen
-                }),
-              ]),
+                const Text(
+                  "Login",
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+                const SizedBox(height: 30,),
+                const TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: "Enter Mobile No.",
+                    labelText: "Username",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.horizontal(),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30,),
+                const TextField(
+                  keyboardType: TextInputType.text,
+                  obscureText: true ,
+                  decoration: InputDecoration(
+                    hintText: "Enter Password",
+                    labelText: "Password",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.horizontal(),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30,),
+                _buildButton(),
+                const SizedBox(height: 30,),
+                RichText(text: TextSpan(
+                  children: [
+                    const TextSpan(
+                        text: "Not a Member?",
+                        style:  TextStyle(
+                            color: Colors.black
+                        ),
+                    ),
+                    const WidgetSpan(child: SizedBox(width: 5,)),
+                    TextSpan(
+                        text: "Sign Up",
+                        style: const TextStyle(
+                            color: Colors.blue
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                              builder: (context) => const RegisterScreen()
+                          ));
+                          }),
+                  ]),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
+}
+
+Widget _buildButton() {
+  return Container(
+    height: 50,
+    width: 350,
+    color: Colors.black,
+    alignment: Alignment.center,
+    child: const Text(
+      "LogIn",
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+      ),
+    ),
+  );
 }
