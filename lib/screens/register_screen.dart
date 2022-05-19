@@ -68,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 30,),
                 const TextField(
                   keyboardType: TextInputType.text,
-                  obscureText: true ,
+                  obscureText: false ,
                   decoration: InputDecoration(
                     hintText: "Confirm Password",
                     labelText: "Confirm Password",
