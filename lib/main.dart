@@ -1,4 +1,5 @@
 import 'package:bloc_pattern/bloc/login_bloc.dart';
+import 'package:bloc_pattern/bloc/register_bloc.dart';
 import 'package:bloc_pattern/screens/login_screen.dart';
 import 'package:bloc_pattern/screens/register_screen.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<LoginBloc>(create: (context) => LoginBloc())
+        Provider<LoginBloc>(create: (context) => LoginBloc()),
+        Provider<RegisterBloc>(create: (context) => RegisterBloc())
       ],
       child: MaterialApp(
         title: 'Complete Authentication',
