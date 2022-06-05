@@ -1,7 +1,6 @@
 import 'package:bloc_pattern/bloc/login_bloc.dart';
 import 'package:bloc_pattern/bloc/register_bloc.dart';
 import 'package:bloc_pattern/screens/login_screen.dart';
-import 'package:bloc_pattern/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: LoginScreen(),
+        home: const LoginScreen(),
       ),
     );
   }

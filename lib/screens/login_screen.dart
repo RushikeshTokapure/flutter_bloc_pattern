@@ -30,68 +30,74 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const Text(
                   "Login",
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold
-                  ),
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 30,),
+                const SizedBox(
+                  height: 30,
+                ),
                 StreamBuilder<String>(
-                  stream: bloc.loginEmail,
-                  builder: (context, snapshot) {
-                    return TextField(
-                      onChanged: (value) => bloc.changeLoginEmail,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        hintText: "Enter Email Address",
-                        labelText: "Username",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.horizontal(),
+                    stream: bloc.loginEmail,
+                    builder: (context, snapshot) {
+                      return TextField(
+                        onChanged: (value) => bloc.changeLoginEmail(value),
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          hintText: "Enter Email Address",
+                          labelText: "Username",
+                          errorText: snapshot.error
+                              ?.toString(), //"This is the error: ${snapshot.error}"
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.horizontal(),
+                          ),
                         ),
-                      ),
-                    );
-                  }
+                      );
+                    }),
+                const SizedBox(
+                  height: 30,
                 ),
-                const SizedBox(height: 30,),
                 StreamBuilder<String>(
-                  stream: bloc.loginPassword,
-                  builder: (context, snapshot) {
-                    return TextField(
-                      onChanged: bloc.changeLoginPassword,
-                      keyboardType: TextInputType.text,
-                      obscureText: true ,
-                      decoration: InputDecoration(
-                        hintText: "Enter Password",
-                        labelText: "Password",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.horizontal(),
+                    stream: bloc.loginPassword,
+                    builder: (context, snapshot) {
+                      return TextField(
+                        onChanged: (value) => bloc.changeLoginPassword(value),
+                        keyboardType: TextInputType.text,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: "Enter Password",
+                          labelText: "Password",
+                          errorText: snapshot.error?.toString(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.horizontal(),
+                          ),
                         ),
-                      ),
-                    );
-                  }
+                      );
+                    }),
+                const SizedBox(
+                  height: 30,
                 ),
-                const SizedBox(height: 30,),
-                _buildButton(),
-                const SizedBox(height: 30,),
-                RichText(text: TextSpan(
-                  children: [
+                _buildButton(context),
+                const SizedBox(
+                  height: 30,
+                ),
+                RichText(
+                  text: TextSpan(children: [
                     const TextSpan(
-                        text: "Not a Member?",
-                        style:  TextStyle(
-                            color: Colors.black
-                        ),
+                      text: "Not a Member?",
+                      style: TextStyle(color: Colors.black),
                     ),
-                    const WidgetSpan(child: SizedBox(width: 5,)),
+                    const WidgetSpan(
+                        child: SizedBox(
+                      width: 5,
+                    )),
                     TextSpan(
                         text: "Sign Up",
-                        style: const TextStyle(
-                            color: Colors.blue
-                        ),
+                        style: const TextStyle(color: Colors.blue),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(
-                              builder: (context) => const RegisterScreen()
-                          ));
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RegisterScreen()));
                           }),
                   ]),
                 ),
@@ -104,18 +110,35 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-Widget _buildButton() {
-  return Container(
-    height: 50,
-    width: 350,
-    color: Colors.black,
-    alignment: Alignment.center,
-    child: const Text(
-      "LogIn",
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-      ),
-    ),
+Widget _buildButton(context) {
+  final bloc = Provider.of<LoginBloc>(context, listen: false);
+
+  return StreamBuilder<Object>(
+    stream: bloc.isValid,
+    builder: (context, snapshot) {
+      return GestureDetector(
+        onTap: snapshot.hasError || !snapshot.hasData
+            ? null
+            : () {
+                bloc.submit();
+              },
+        child: Container(
+          height: 50,
+          width: 350,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              color: snapshot.hasError || !snapshot.hasData
+                  ? Colors.grey
+                  : Colors.red),
+          child: const Text(
+            "LogIn",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
+          ),
+        ),
+      );
+    },
   );
 }
